@@ -81,7 +81,7 @@ def callback_minute(context: telegram.ext.CallbackContext):
     elif (newStatus == "amber"):
         amberCount += 1
         unknownCount = 0
-        if (amberCount <= 10):
+        if (amberCount <= 15):
             return
     else:
         unknownCount = 0
