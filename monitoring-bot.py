@@ -20,6 +20,7 @@ logger = logging.getLogger(__name__)
 
 lastStatus = "not started"
 unknownCount = 0
+amberCount = 0
 
 def lastFile():
     list_of_files = glob.glob('/monitoring/*.png') # * means all if need specific format then *.csv
@@ -61,7 +62,8 @@ def parseImage(imageUrl):
 def callback_minute(context: telegram.ext.CallbackContext):
     global lastStatus
     global unknownCount
-    
+    global amberCount
+
     latestFile = lastFile()
     newStatus = parseImage(latestFile)
 
@@ -73,10 +75,17 @@ def callback_minute(context: telegram.ext.CallbackContext):
         return
     elif (newStatus == "unknown"):
         unknownCount += 1
+        amberCount = 0
         if (unknownCount <= 15):
+            return
+    elif (newStatus == "amber"):
+        amberCount += 1
+        unknownCount = 0
+        if (amberCount <= 10):
             return
     else:
         unknownCount = 0
+        amberCount = 0
 
     list_of_files = glob.glob('/monitoring/chats/*') 
     for file in list_of_files:
