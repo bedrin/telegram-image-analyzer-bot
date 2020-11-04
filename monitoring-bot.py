@@ -6,7 +6,7 @@ import glob
 import os
 
 import telegram.ext
-from telegram.ext import Updater, CommandHandler
+from telegram.ext import Updater, CommandHandler, Defaults
 
 from datetime import datetime, time, tzinfo, timedelta
 
@@ -184,7 +184,8 @@ def main():
     # Create the Updater and pass it your bot's token.
     # Make sure to set use_context=True to use the new context based callbacks
     # Post version 12 this will no longer be necessary
-    updater = Updater(os.environ['BOT_TOKEN'], use_context=True)
+    defaults = Defaults(timeout = 60)
+    updater = Updater(os.environ['BOT_TOKEN'], use_context=True, defaults=defaults)
 
     # Get the dispatcher to register handlers
     dp = updater.dispatcher
